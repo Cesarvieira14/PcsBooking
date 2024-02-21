@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "40580158193",
+    "project_id": "the-pc-booking-app",
+    "storage_bucket": "the-pc-booking-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40580158193:android:ae79d2cc21531cf9c88f50",
+        "android_client_info": {
+          "package_name": "com.example.pcsbooking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlQaPzs1S3A3y-v_yhZZa_tcMfSyqkyG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
