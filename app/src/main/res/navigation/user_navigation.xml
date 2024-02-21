@@ -12,21 +12,21 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.pcsbooking.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_manage"
+        android:name="com.example.pcsbooking.ui.manage.ManageFragment"
+        android:label="@string/title_manage"
+        tools:layout="@layout/fragment_manage" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.pcsbooking.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_book"
+        android:name="com.example.pcsbooking.ui.Book.BookFragment"
+        android:label="@string/title_book"
+        tools:layout="@layout/fragment_book" />
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.pcsbooking.ui.profile.ProfileFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
 </navigation>
