@@ -6,11 +6,21 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.pcsbooking.R
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.auth
 
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        // Initialize Firebase Auth
+        auth = Firebase.auth
 
 
         findViewById<Button>(R.id.ConfirmBtn).setOnClickListener {
@@ -45,19 +55,30 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        else
-            showToast("sucesssfull")
-        // All validations passed, proceed with registration logic
-        // For example:
-        // registerUser(fullName, email, phoneNo, password)
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Registration successful, update user's profile information
+                    val user = auth.currentUser
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(fullName)
+                        .build()
 
-        // You can finish the activity if registration is successful
-        // finish()
-        findViewById<EditText>(R.id.editTxtEmail).text.clear()
-        findViewById<EditText>(R.id.editTxtFullname).text.clear()
-        findViewById<EditText>(R.id.editTxtPhoneNumber).text.clear()
-        findViewById<EditText>(R.id.editTxtPassword).text.clear()
-        findViewById<EditText>(R.id.editTxtConfirmPassword).text.clear()
+                    user?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener { profileUpdateTask ->
+                            if (profileUpdateTask.isSuccessful) {
+                                showToast("Registration successful")
+                                finish() // Optionally finish the activity
+                            } else {
+                                // Handle profile update failure
+                                showToast("Failed to update profile")
+                            }
+                        }
+                } else {
+                    // If registration fails, display a message to the user.
+                    showToast("Registration failed: ${task.exception?.message}")
+                }
+            }
     }
 
     private fun showToast(message: String) {
