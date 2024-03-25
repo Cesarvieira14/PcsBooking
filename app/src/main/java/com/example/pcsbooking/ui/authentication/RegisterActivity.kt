@@ -10,6 +10,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
+import com.google.firebase.database.FirebaseDatabase
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -67,8 +68,23 @@ class RegisterActivity : AppCompatActivity() {
                     user?.updateProfile(profileUpdates)
                         ?.addOnCompleteListener { profileUpdateTask ->
                             if (profileUpdateTask.isSuccessful) {
-                                showToast("Registration successful")
-                                finish() // Optionally finish the activity
+                                // Save user data to Realtime Database
+                                val database = FirebaseDatabase.getInstance().reference
+                                val userData = mapOf(
+                                    "fullName" to fullName,
+                                    "email" to email,
+                                    "phoneNo" to phoneNo
+                                )
+                                user.uid?.let { userId ->
+                                    database.child("users").child(userId).setValue(userData)
+                                        .addOnSuccessListener {
+                                            showToast("Registration successful")
+                                            finish() // Optionally finish the activity
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            showToast("Failed to save user data: ${exception.message}")
+                                        }
+                                }
                             } else {
                                 // Handle profile update failure
                                 showToast("Failed to update profile")
