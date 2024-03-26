@@ -101,25 +101,27 @@
   </LinearLayout>
 
   <androidx.cardview.widget.CardView
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="30dp"
       app:cardCornerRadius="30dp"
       app:cardElevation="20dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_edittext"
         android:orientation="vertical"
-        android:padding="9dp">
+        android:padding="5dp">
+
       <TextView
-          android:layout_marginLeft="9dp"
+          android:id="@+id/forgotPassword"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_margin="2dp"
           android:text="Forgot Password?"
           android:textStyle="bold"
-          />
+          android:textColor="@color/purple_700"/>
 
 
     </LinearLayout>

@@ -1,11 +1,15 @@
 package com.example.pcsbooking.ui.authentication
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -27,6 +31,10 @@ class LoginActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.RegisterBtn).setOnClickListener{
             handleRegisterButtonClick()
+        }
+
+        findViewById<TextView>(R.id.forgotPassword).setOnClickListener{
+            handleForgotPassClick()
         }
     }
 
@@ -59,6 +67,36 @@ class LoginActivity : AppCompatActivity() {
         val start = Intent (this, RegisterActivity::class.java)
         startActivity(start)
     }
+
+    private fun handleForgotPassClick(){
+        val builder = AlertDialog.Builder(this@LoginActivity)
+        val dialogView = layoutInflater.inflate(R.layout.popup_forgot, null)
+        val emailBox = dialogView.findViewById<EditText>(R.id.emailBox)
+        builder.setView(dialogView)
+        val dialog = builder.create()
+        dialogView.findViewById<Button>(R.id.btnReset).setOnClickListener {
+            val userEmail = emailBox.text.toString()
+            if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+                Toast.makeText(this@LoginActivity, "Enter your registered email id", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            auth.sendPasswordResetEmail(userEmail).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this@LoginActivity, "Check your email", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                } else {
+                    Toast.makeText(this@LoginActivity, "Unable to send, failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        dialogView.findViewById<Button>(R.id.btnCancel).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.window?.setBackgroundDrawable(ColorDrawable(0))
+        dialog.show()
+    }
+
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
