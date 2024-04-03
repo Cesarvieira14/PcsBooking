@@ -7,22 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pcsbooking.databinding.FragmentBookBinding
+import com.example.pcsbooking.databinding.FragmentTimeSlotBinding
 
-class BookFragment : Fragment() {
+class TimeSlotFragment : Fragment() {
 
-    private lateinit var binding: FragmentBookBinding
+    private lateinit var binding: FragmentTimeSlotBinding
     private lateinit var bookViewModel: BookViewModel
-    private lateinit var pcAdapter: PcAdapter
+    private lateinit var timeSlotAdapter: TimeSlotAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentBookBinding.inflate(inflater, container, false)
+        binding = FragmentTimeSlotBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,22 +29,16 @@ class BookFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
+        timeSlotAdapter = TimeSlotAdapter(listOf())
 
-        // Instantiate PcAdapter with the click listener
-        pcAdapter = PcAdapter(listOf()) { pc ->
-            bookViewModel.selectedPc.value = pc
-            // Navigate to TimeSlotFragment
-            val action = BookFragmentDirections.actionBookFragmentToTimeSlotFragment()
-            view.findNavController().navigate(action)
-        }
-
-        binding.rvPcs.apply {
+        binding.rvTimeSlots.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = pcAdapter
+            adapter = timeSlotAdapter
         }
 
-        bookViewModel.pcs.observe(viewLifecycleOwner, Observer { pcs ->
-            pcAdapter.updatePcs(pcs)
+        bookViewModel.selectedPc.observe(viewLifecycleOwner, Observer { pc ->
+            // Update your UI to display the time slots for the selected PC
+            timeSlotAdapter.updateTimeSlots(pc.reservations.values.toList())
         })
     }
 }
