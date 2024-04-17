@@ -21,17 +21,28 @@
         android:id="@+id/navigation_book"
         android:name="com.example.pcsbooking.ui.Book.BookFragment"
         android:label="@string/title_book"
-        tools:layout="@layout/fragment_book" >
+        tools:layout="@layout/fragment_book">
         <action
-            android:id="@+id/action_bookFragment_to_timeSlotFragment"
+            android:id="@+id/action_bookFragment_to_availableDaysFragment"
+            app:destination="@id/navigation_available_days"> <!-- Corrected destination -->
+
+        </action>
+    </fragment>
+<fragment
+        android:id="@+id/navigation_available_days"
+        android:name="com.example.pcsbooking.ui.Book.AvailableDaysFragment"
+        android:label="@string/title_available_days"
+        tools:layout="@layout/fragment_available_days">
+        <action
+            android:id="@+id/action_navigation_available_days_to_navigation_timeslot"
             app:destination="@id/navigation_timeslot" />
     </fragment>
+
     <fragment
         android:id="@+id/navigation_timeslot"
         android:name="com.example.pcsbooking.ui.Book.TimeSlotFragment"
         android:label="@string/title_timeslot"
         tools:layout="@layout/fragment_time_slot" />
-
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -40,3 +51,5 @@
         tools:layout="@layout/fragment_profile" />
 
 </navigation>
+
+
