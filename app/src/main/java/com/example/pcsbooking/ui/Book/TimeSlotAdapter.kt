@@ -11,7 +11,7 @@ import com.example.pcsbooking.R
 class TimeSlotAdapter(private var timeSlots: List<TimeSlot>) : RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
 
     class TimeSlotViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvTimeSlot: TextView = view.findViewById(R.id.tv_time_slot)
+        val tvTimeSlot: TextView = view.findViewById(R.id.time_slot)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSlotViewHolder {
