@@ -6,80 +6,93 @@ import androidx.lifecycle.ViewModel
 import com.example.pcsbooking.Model.Pc
 import com.example.pcsbooking.Model.PcRepository
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class BookViewModel : ViewModel() {
     private val repository = PcRepository()
     val pcs = repository.pcs
 
-    // Define LiveData for available days
     private val _availableDays = MutableLiveData<List<String>>()
     val availableDays: LiveData<List<String>> get() = _availableDays
 
-    // Define LiveData for selected day
     private val _selectedDay = MutableLiveData<String>()
     val selectedDay: LiveData<String> get() = _selectedDay
 
-    // Define LiveData for selected PC
     private val _selectedPc = MutableLiveData<Pc>()
     val selectedPc: LiveData<Pc> get() = _selectedPc
 
     private val database = FirebaseDatabase.getInstance()
     private val reservationsRef = database.getReference("reservations")
 
+    init {
+        updateBookingAvailability()
+    }
+
     fun bookPc(pcId: String, timeSlot: String) {
         repository.bookPc(pcId, timeSlot)
     }
 
-    fun fetchAvailableDays() {
-        val availableDaysList = mutableListOf<String>()
+    private fun updateBookingAvailability() {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        val todayStr = dateFormat.format(calendar.time)
 
-        reservationsRef.addValueEventListener(object : ValueEventListener {
+        reservationsRef.child(todayStr).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Clear the list before updating
-                availableDaysList.clear()
-
-                // Iterate over the children of reservations node
-                for (pcSnapshot in snapshot.children) {
-                    // Get the dates under each pc
-                    for (dateSnapshot in pcSnapshot.children) {
-                        // Add the date to the list
-                        availableDaysList.add(dateSnapshot.key.toString())
-                    }
+                if (snapshot.exists()) {
+                    reservationsRef.child(todayStr).removeValue()
+                    addNextWeekDate(calendar, dateFormat)
                 }
-
-                // Update the LiveData with the list of available days
-                _availableDays.value = availableDaysList.distinct() // Remove duplicates
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Clear the list in case of cancellation
-                availableDaysList.clear()
-                // Handle error
-            }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
     }
-    fun fetchAvailableDaysForPc(pc: Pc) {
+
+    private fun addNextWeekDate(calendar: Calendar, dateFormat: SimpleDateFormat) {
+        calendar.add(Calendar.DATE, 7)
+        val nextWeekStr = dateFormat.format(calendar.time)
+
+        // Construct a map of the new day with time slots
+        val timeSlots = mutableMapOf<String, Boolean>().apply {
+            for (hour in 9..17) {
+                this["$hour:00-${hour + 1}:00"] = false
+            }
+        }
+        reservationsRef.child(nextWeekStr).setValue(timeSlots)
+    }
+
+     fun fetchAvailableDaysForPc(pc: Pc) {
         val availableDaysList = mutableListOf<String>()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        val todayStr = dateFormat.format(calendar.time)
 
         reservationsRef.child(pc.id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Clear the list before updating
                 availableDaysList.clear()
 
-                // Iterate over the children of the selected PC node
-                for (dateSnapshot in snapshot.children) {
-                    // Add the date to the list
-                    availableDaysList.add(dateSnapshot.key.toString())
-                }
+                // Debug: Print out the keys to see what we are getting.
+                println("Keys: ${snapshot.children.map { it.key }}")
 
-                // Update the LiveData with the list of available days for the selected PC
-                _availableDays.value = availableDaysList.distinct() // Remove duplicates
+                snapshot.children.mapNotNullTo(availableDaysList) { it.key }
+
+                val upcomingDaysList = availableDaysList
+                    .filter { it >= todayStr }
+                    .sorted()
+                    .take(7)
+
+                // Debug: Check the filtered and sorted list
+                println("Upcoming Days: $upcomingDaysList")
+
+                _availableDays.value = if (upcomingDaysList.isEmpty()) emptyList() else upcomingDaysList
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Clear the list in case of cancellation
+                // Consider adding logging here to understand why it's being cancelled.
                 availableDaysList.clear()
-                // Handle error
+                _availableDays.value = emptyList()
             }
         })
     }
@@ -90,6 +103,7 @@ class BookViewModel : ViewModel() {
 
     fun setSelectedPc(pc: Pc) {
         _selectedPc.value = pc
+        fetchAvailableDaysForPc(pc) // Now fetches days when a PC is selected
     }
 }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pcsbooking.R
 import com.example.pcsbooking.databinding.FragmentAvailableDaysBinding
 
 class AvailableDaysFragment : Fragment() {
@@ -31,24 +32,27 @@ class AvailableDaysFragment : Fragment() {
 
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
 
-        // Fetch available days only if the LiveData is not already observed
-        if (bookViewModel.availableDays.value == null) {
-            bookViewModel.fetchAvailableDays()
-        }
-
         // Observe available days
         bookViewModel.availableDays.observe(viewLifecycleOwner) { availableDays ->
             val daysAdapter = AvailableDaysAdapter(requireContext(), availableDays) { day ->
                 // Set selected day in ViewModel
                 bookViewModel.setSelectedDay(day)
-                // Navigate back to BookFragment
-                findNavController().popBackStack()
+                // Navigate to the next step, like TimeSlotFragment
+                // Replace R.id.action_with_correct_action_id from your navigation graph
+                findNavController().navigate(R.id.action_navigation_available_days_to_navigation_timeslot)
             }
 
             // Set up RecyclerView
             binding.daysRecyclerView.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = daysAdapter
+            }
+        }
+
+        // Assuming that you have a selected PC, observe it to fetch available days for it
+        bookViewModel.selectedPc.observe(viewLifecycleOwner) { selectedPc ->
+            selectedPc?.let {
+                bookViewModel.fetchAvailableDaysForPc(it)
             }
         }
     }
@@ -58,4 +62,3 @@ class AvailableDaysFragment : Fragment() {
         _binding = null
     }
 }
-

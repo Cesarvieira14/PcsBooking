@@ -1,0 +1,8 @@
+{
+  "database": {
+    "rules": "booking.app.json"
+  },
+  "functions": {
+    "source": "functions"
+  }
+}
