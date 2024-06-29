@@ -9,10 +9,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pcsbooking.databinding.FragmentTimeSlotBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class TimeSlotFragment : Fragment() {
 
-    private lateinit var binding: FragmentTimeSlotBinding
+    private var _binding: FragmentTimeSlotBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var bookViewModel: BookViewModel
     private lateinit var timeSlotAdapter: TimeSlotAdapter
 
@@ -21,24 +25,60 @@ class TimeSlotFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTimeSlotBinding.inflate(inflater, container, false)
+        _binding = FragmentTimeSlotBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
-        timeSlotAdapter = TimeSlotAdapter(listOf())
+        bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
+
+        // Initialize RecyclerView and Adapter for time slots
+        timeSlotAdapter = TimeSlotAdapter(requireContext(), emptyList()) { timeSlot ->
+            // Handle time slot selection and booking
+            val pcId = bookViewModel.selectedPc.value?.id ?: ""
+            val selectedDay = bookViewModel.selectedDay.value ?: ""
+            val startTime = timeSlot.substringBefore("-").trim()
+            val endTime = timeSlot.substringAfter("-").trim()
+
+            // Convert time to minutes for database storage
+            val startTimeInMinutes = startTime.split(":")[0].toInt() * 60
+            val endTimeInMinutes = endTime.split(":")[0].toInt() * 60
+
+            // Perform booking
+            bookViewModel.bookPc(
+                pcId,
+                Firebase.auth.currentUser?.uid ?: "",
+                selectedDay,
+                startTimeInMinutes,
+                endTimeInMinutes
+            )
+        }
 
         binding.rvTimeSlots.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = timeSlotAdapter
         }
 
-        bookViewModel.selectedPc.observe(viewLifecycleOwner, Observer { pc ->
-            // Update your UI to display the time slots for the selected PC
-            timeSlotAdapter.updateTimeSlots(pc.reservations.values.toList())
+        // Observe available time slots from ViewModel
+        bookViewModel.availableTimeSlots.observe(
+            viewLifecycleOwner,
+            Observer { availableTimeSlots ->
+                timeSlotAdapter.submitList(availableTimeSlots)
+            })
+
+        // Fetch available time slots for the selected day and PC
+        bookViewModel.selectedDay.observe(viewLifecycleOwner, Observer { selectedDay ->
+            val selectedPc = bookViewModel.selectedPc.value
+            if (selectedPc != null) {
+                bookViewModel.fetchAvailableTimeSlots(selectedDay, selectedPc.id)
+            }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

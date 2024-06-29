@@ -12,7 +12,7 @@ import com.example.pcsbooking.R
 // PcAdapter.kt
 class PcAdapter(
     private val context: Context,
-    private val pcsList: List<Pc>,
+    private var pcsList: List<Pc>,
     private val onItemClick: (Pc) -> Unit
 ) : RecyclerView.Adapter<PcAdapter.PcViewHolder>() {
 
@@ -33,11 +33,16 @@ class PcAdapter(
         return pcsList.size
     }
 
+    fun submitList(newList: List<Pc>) {
+        pcsList = newList
+        notifyDataSetChanged()
+    }
+
     inner class PcViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleText: TextView = itemView.findViewById(R.id.tv_pc_name)
 
         fun bind(pc: Pc) {
-            titleText.text = pc.id
+            titleText.text = pc.name // Use pc.name or whichever property of Pc you want to display
         }
     }
 }

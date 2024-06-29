@@ -10,9 +10,10 @@ import com.example.pcsbooking.R
 
 class AvailableDaysAdapter(
     private val context: Context,
-    private val availableDays: List<String>,
     private val onItemClick: (String) -> Unit
 ) : RecyclerView.Adapter<AvailableDaysAdapter.AvailableDayViewHolder>() {
+
+    private var availableDays: List<String> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvailableDayViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_available_day, parent, false)
@@ -31,6 +32,11 @@ class AvailableDaysAdapter(
         return availableDays.size
     }
 
+    fun submitList(days: List<String>) {
+        availableDays = days
+        notifyDataSetChanged()
+    }
+
     inner class AvailableDayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val dayText: TextView = itemView.findViewById(R.id.tv_day)
 
@@ -39,3 +45,5 @@ class AvailableDaysAdapter(
         }
     }
 }
+
+
