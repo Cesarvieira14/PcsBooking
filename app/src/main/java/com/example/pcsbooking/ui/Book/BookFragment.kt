@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pcsbooking.R
 import com.example.pcsbooking.databinding.FragmentBookBinding
 
@@ -21,7 +22,7 @@ class BookFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var bookViewModel: BookViewModel
-    private lateinit var pcAdapter: ArrayAdapter<String> // Adapter for ListView
+    private lateinit var pcAdapter: PcAdapter // Adapter for RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,30 +38,22 @@ class BookFragment : Fragment() {
 
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
 
-        // Initialize ArrayAdapter for ListView
-        pcAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, arrayListOf())
+        // Initialize PcAdapter for RecyclerView
+        pcAdapter = PcAdapter(requireContext(), listOf()) { selectedPc ->
+            bookViewModel.setSelectedPc(selectedPc)
+            findNavController().navigate(R.id.action_bookFragment_to_availableDaysFragment)
+        }
 
-        // Set adapter to ListView
+        // Set adapter and layout manager to RecyclerView
+        binding.pcsListView.layoutManager = LinearLayoutManager(requireContext())
         binding.pcsListView.adapter = pcAdapter
 
         // Observe PCs from ViewModel
         bookViewModel.pcs.observe(viewLifecycleOwner, Observer { pcs ->
             pcs?.let {
-                pcAdapter.clear()
-                pcAdapter.addAll(pcs.map { it.id }) // Assuming 'id' is a property of Pc class
-                pcAdapter.notifyDataSetChanged()
+                pcAdapter.submitList(it)
             }
         })
-
-        // Handle item click in ListView
-        binding.pcsListView.setOnItemClickListener { parent, view, position, id ->
-            val selectedPc = bookViewModel.pcs.value?.get(position)
-            selectedPc?.let {
-                bookViewModel.setSelectedPc(it)
-                findNavController().navigate(R.id.action_bookFragment_to_availableDaysFragment)
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -68,4 +61,3 @@ class BookFragment : Fragment() {
         _binding = null
     }
 }
-

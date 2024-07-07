@@ -5,7 +5,6 @@
     android:fillViewport="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,13 +20,14 @@
             android:text="Machines"
             android:layout_marginTop="20px" />
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pcs_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10px"
+            android:layout_marginTop="10dp"
             android:padding="12dp"
             android:layout_marginBottom="60dp" />
+
 
     </LinearLayout>
 </ScrollView>
