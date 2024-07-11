@@ -46,6 +46,12 @@ class BookViewModel : ViewModel() {
                 val pcsList = mutableListOf<Pc>()
                 for (pcSnapshot in snapshot.children) {
                     val pc = pcSnapshot.getValue(Pc::class.java)
+                    pcSnapshot.key?.let {
+                        if (pc != null) {
+                            pc.id = it
+                        }
+                    }
+
                     pc?.let {
                         pcsList.add(pc)
                     }
