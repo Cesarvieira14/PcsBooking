@@ -1,7 +1,10 @@
 package com.example.pcsbooking.ui.Book
 
+import android.app.Application
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
 import java.util.*
 
-class BookViewModel : ViewModel() {
+class BookViewModel(application: Application) : AndroidViewModel(application) {
 
     private val bookingsRef = FirebaseDatabase.getInstance().getReference("bookings")
     private val pcsRef = FirebaseDatabase.getInstance().getReference("pcs")
@@ -46,6 +49,12 @@ class BookViewModel : ViewModel() {
                 val pcsList = mutableListOf<Pc>()
                 for (pcSnapshot in snapshot.children) {
                     val pc = pcSnapshot.getValue(Pc::class.java)
+                    pcSnapshot.key?.let {
+                        if (pc != null) {
+                            pc.id = it
+                        }
+                    }
+
                     pc?.let {
                         pcsList.add(pc)
                     }
@@ -126,10 +135,13 @@ class BookViewModel : ViewModel() {
 
         bookingsRef.child(bookingId).setValue(booking)
             .addOnSuccessListener {
-                // Handle success if needed
+                // Fetch time slots to update list
+                fetchAvailableTimeSlots(selectedDay.value.toString(), selectedPc.value!!.id)
+                Toast.makeText(getApplication(), "Booking successful.", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
                 // Handle failure if needed
+                Toast.makeText(getApplication(), "Something went wrong on your booking.", Toast.LENGTH_SHORT).show()
             }
     }
 }

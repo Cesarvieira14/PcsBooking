@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -52,6 +53,11 @@ class BookFragment : Fragment() {
         bookViewModel.pcs.observe(viewLifecycleOwner, Observer { pcs ->
             pcs?.let {
                 pcAdapter.submitList(it)
+            }
+
+            if (pcs.isNotEmpty()) {
+                val machineProgressBar: ProgressBar = view.findViewById(R.id.machinesProgressBar)
+                machineProgressBar.visibility = View.GONE
             }
         })
     }

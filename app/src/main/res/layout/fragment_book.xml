@@ -20,6 +20,13 @@
             android:text="Machines"
             android:layout_marginTop="20px" />
 
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/machinesProgressBar"
+            android:visibility="visible" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pcs_list_view"
             android:layout_width="match_parent"
