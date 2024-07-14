@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pcsbooking.databinding.FragmentTimeSlotBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import androidx.appcompat.app.AlertDialog
 
 class TimeSlotFragment : Fragment() {
 
@@ -46,14 +47,8 @@ class TimeSlotFragment : Fragment() {
             val startTimeInMinutes = startTime.split(":")[0].toInt() * 60
             val endTimeInMinutes = endTime.split(":")[0].toInt() * 60
 
-            // Perform booking
-            bookViewModel.bookPc(
-                pcId,
-                Firebase.auth.currentUser?.uid ?: "",
-                selectedDay,
-                startTimeInMinutes,
-                endTimeInMinutes
-            )
+            // Show confirmation dialog
+            showConfirmationDialog(pcId, selectedDay, startTimeInMinutes, endTimeInMinutes)
         }
 
         binding.rvTimeSlots.apply {
@@ -75,6 +70,36 @@ class TimeSlotFragment : Fragment() {
                 bookViewModel.fetchAvailableTimeSlots(selectedDay, selectedPc.id)
             }
         })
+    }
+
+    private fun showConfirmationDialog(
+        pcId: String,
+        selectedDay: String,
+        startTimeInMinutes: Int,
+        endTimeInMinutes: Int
+    ) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirm Booking")
+        builder.setMessage("Do you want to book this time slot?")
+
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            // Perform booking
+            bookViewModel.bookPc(
+                pcId,
+                Firebase.auth.currentUser?.uid ?: "",
+                selectedDay,
+                startTimeInMinutes,
+                endTimeInMinutes
+            )
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     override fun onDestroyView() {
