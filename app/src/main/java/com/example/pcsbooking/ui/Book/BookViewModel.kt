@@ -39,7 +39,11 @@ class BookViewModel(application: Application) : AndroidViewModel(application) {
     private val _selectedDay = MutableLiveData<String>()
     val selectedDay: LiveData<String> get() = _selectedDay
 
+    private val _myBookings = MutableLiveData<List<Booking>>()
+    val myBookings: LiveData<List<Booking>> get() = _myBookings
+
     init {
+        fetchMyBookings()
         fetchPcs()
     }
 
@@ -60,6 +64,26 @@ class BookViewModel(application: Application) : AndroidViewModel(application) {
                     }
                 }
                 _pcs.value = pcsList
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
+    fun fetchMyBookings() {
+        bookingsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val bookingsList = mutableListOf<Booking>()
+                for (bookingSnapshot in snapshot.children) {
+                    val booking = bookingSnapshot.getValue(Booking::class.java)
+
+                    booking?.let {
+                        bookingsList.add(booking)
+                    }
+                }
+                _myBookings.value = bookingsList
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -141,7 +165,11 @@ class BookViewModel(application: Application) : AndroidViewModel(application) {
             }
             .addOnFailureListener {
                 // Handle failure if needed
-                Toast.makeText(getApplication(), "Something went wrong on your booking.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    getApplication(),
+                    "Something went wrong on your booking.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 }
