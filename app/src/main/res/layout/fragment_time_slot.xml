@@ -7,10 +7,12 @@
     android:orientation="vertical">
 
     <TextView
+        android:gravity="center"
+        android:textSize="20dp"
         android:layout_width="match_parent"
-        android:layout_height="40px"
-        android:text="Chose a Time Slot"
-        android:layout_marginBottom="20px">
+        android:layout_height="40dp"
+        android:text="Available Time Slots "
+        android:layout_marginVertical="10dp">
 
     </TextView>
 

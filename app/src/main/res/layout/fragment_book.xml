@@ -14,11 +14,13 @@
 
         <TextView
             style="@style/TextAppearance.Material3.HeadlineLarge"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="Machines"
-            android:layout_marginTop="20px" />
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"

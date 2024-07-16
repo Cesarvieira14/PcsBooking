@@ -112,23 +112,32 @@ class BookViewModel(application: Application) : AndroidViewModel(application) {
 
         val availableSlots = mutableListOf<String>()
 
-        for (time in startTime until endTime step (2 * 60)) { // 2 hours slots
-            availableSlots.add("${time / 60}:00 - ${(time + 120) / 60}:00")
+        // Get the current time in minutes
+        val now = Calendar.getInstance()
+        val currentHour = now.get(Calendar.HOUR_OF_DAY)
+        val currentMinute = now.get(Calendar.MINUTE)
+        val currentTimeInMinutes = currentHour * 60 + currentMinute
+
+        // Generate available slots based on the current time
+        for (time in startTime until endTime step (2 * 60)) {
+            if (time > currentTimeInMinutes || selectedDate != getCurrentDate()) { // Check if slot is in the future
+                availableSlots.add("${time / 60}:00 - ${(time + 120) / 60}:00")
+            }
         }
 
         // Now filter out booked time slots
         bookingsRef.orderByChild("date").equalTo(selectedDate)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val bookedSlots = mutableListOf<String>()
+                    val bookedSlots = mutableSetOf<String>() // Use a set to avoid duplicates
 
                     snapshot.children.forEach { bookingSnapshot ->
-                        val startTime =
+                        val startTimeMinutes =
                             bookingSnapshot.child("startTime").getValue(Int::class.java) ?: return
-                        val endTime =
+                        val endTimeMinutes =
                             bookingSnapshot.child("endTime").getValue(Int::class.java) ?: return
 
-                        for (time in startTime until endTime step (2 * 60)) {
+                        for (time in startTimeMinutes until endTimeMinutes step (2 * 60)) {
                             val slot = "${time / 60}:00 - ${(time + 120) / 60}:00"
                             bookedSlots.add(slot)
                         }
@@ -143,6 +152,16 @@ class BookViewModel(application: Application) : AndroidViewModel(application) {
                     _availableTimeSlots.value = emptyList()
                 }
             })
+    }
+
+    // Helper function to get the current date in the same format as selectedDate
+    fun getCurrentDate(): String {
+        val now = Calendar.getInstance()
+        val year = now.get(Calendar.YEAR)
+        val month = now.get(Calendar.MONTH) + 1 // Months are 0-based in Calendar
+        val day = now.get(Calendar.DAY_OF_MONTH)
+
+        return "%04d-%02d-%02d".format(year, month, day) // Assuming the date format is "YYYY-MM-DD"
     }
 
     fun setSelectedPc(pc: Pc) {
