@@ -1,5 +1,7 @@
 package com.example.pcsbooking.ui.manage
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +18,12 @@ class BookingAdapter(
     private val onUnbookClick: (Booking) -> Unit
 ) : RecyclerView.Adapter<BookingAdapter.BookingViewHolder>() {
 
+    private lateinit var context: Context
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_booking, parent, false)
-        return BookingViewHolder(view, onUnbookClick)
+        context = parent.context
+        val view = LayoutInflater.from(context).inflate(R.layout.item_booking, parent, false)
+        return BookingViewHolder(view, onUnbookClick, context)
     }
 
     override fun onBindViewHolder(holder: BookingViewHolder, position: Int) {
@@ -33,8 +38,11 @@ class BookingAdapter(
         notifyDataSetChanged()
     }
 
-    class BookingViewHolder(itemView: View, private val onUnbookClick: (Booking) -> Unit) :
-        RecyclerView.ViewHolder(itemView) {
+    class BookingViewHolder(
+        itemView: View,
+        private val onUnbookClick: (Booking) -> Unit,
+        private val context: Context
+    ) : RecyclerView.ViewHolder(itemView) {
         private val tvBookingDetails: TextView = itemView.findViewById(R.id.tvBookingDetails)
         private val btnUnbook: Button = itemView.findViewById(R.id.btnUnbook)
 
@@ -46,8 +54,19 @@ class BookingAdapter(
             tvBookingDetails.text = details
             btnUnbook.visibility = if (isFutureBooking(booking)) View.VISIBLE else View.GONE
             btnUnbook.setOnClickListener {
-                onUnbookClick(booking)
+                showConfirmationDialog(booking)
             }
+        }
+
+        private fun showConfirmationDialog(booking: Booking) {
+            AlertDialog.Builder(context)
+                .setTitle("Confirm Unbooking")
+                .setMessage("Are you sure you want to unbook this time slot?")
+                .setPositiveButton("Yes") { _, _ ->
+                    onUnbookClick(booking)
+                }
+                .setNegativeButton("No", null)
+                .show()
         }
 
         private fun formatTime(minutes: Int): String {
