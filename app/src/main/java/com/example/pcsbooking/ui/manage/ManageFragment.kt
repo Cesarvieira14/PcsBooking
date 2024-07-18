@@ -1,5 +1,6 @@
 package com.example.pcsbooking.ui.manage
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pcsbooking.R
 import com.example.pcsbooking.databinding.FragmentManageBinding
 
 class ManageFragment : Fragment() {
@@ -39,11 +41,16 @@ class ManageFragment : Fragment() {
             adapter = bookingAdapter
         }
 
-        manageViewModel.bookings.observe(viewLifecycleOwner) { bookings ->
+        manageViewModel.futureBookings.observe(viewLifecycleOwner) { bookings ->
             bookingAdapter.updateBookings(bookings)
         }
 
         manageViewModel.fetchUserBookings()
+
+        binding.btnPastBookings.setOnClickListener {
+            val intent = Intent(requireContext(), PastBookingsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
@@ -51,4 +58,3 @@ class ManageFragment : Fragment() {
         _binding = null
     }
 }
-
