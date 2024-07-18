@@ -40,12 +40,20 @@ class BookingAdapter(
 
         fun bind(booking: Booking) {
             val details =
-                "PC: ${booking.pcId}\nDate: ${booking.date}\nTime: ${booking.startTime} - ${booking.endTime}"
+                "PC: ${booking.pcId}\nDate: ${booking.date}\nTime: ${formatTime(booking.startTime)} - ${
+                    formatTime(booking.endTime)
+                }"
             tvBookingDetails.text = details
             btnUnbook.visibility = if (isFutureBooking(booking)) View.VISIBLE else View.GONE
             btnUnbook.setOnClickListener {
                 onUnbookClick(booking)
             }
+        }
+
+        private fun formatTime(minutes: Int): String {
+            val hours = minutes / 60
+            val mins = minutes % 60
+            return String.format("%02d:%02d", hours, mins)
         }
 
         private fun isFutureBooking(booking: Booking): Boolean {
