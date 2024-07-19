@@ -51,7 +51,7 @@
         <Button
             android:id="@+id/LogoutButton"
             android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:text="Logout"
             android:backgroundTint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"

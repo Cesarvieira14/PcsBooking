@@ -3,24 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Book.TimeSlotFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.Book.TimeSlotFragment">
 
+    <!-- Title TextView -->
     <TextView
-        android:gravity="center"
-        android:textSize="20dp"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Available Time Slots "
-        android:layout_marginVertical="10dp">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:text="Available Time Slots"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
 
-    </TextView>
-
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTimeSlots"
         android:layout_width="match_parent"
-        android:layout_height="700px"
-        android:layout_marginTop="40px"
-        android:layout_gravity="center_vertical" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:padding="8dp" />
 
 </LinearLayout>
