@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Title with Larger Text Size and Bold Style -->
     <TextView
         android:id="@+id/tvManageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your Bookings"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:fontFamily="sans-serif-medium"
         android:paddingBottom="16dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBookings"
+    <!-- CardView to add elevation and padding to RecyclerView -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
 
-    <Button
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBookings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="8dp" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- MaterialButton with Rounded Corners and Primary Color -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPastBookings"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Past Bookings" />
-
+        android:text="View Past Bookings"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="@android:color/white"
+        android:padding="12dp"
+        android:layout_marginBottom="50dp"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>
