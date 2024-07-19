@@ -14,15 +14,28 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Title with Larger Text Size and Bold Style -->
         <TextView
             style="@style/TextAppearance.Material3.HeadlineLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="8dp"
             android:text="Machines"
-            android:textColor="@color/black" />
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
 
+        <!-- Instruction Text Below Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--Please select a machine to book--"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp" />
+
+        <!-- ProgressBar with a Larger Style -->
         <ProgressBar
             android:id="@+id/machinesProgressBar"
             style="?android:attr/progressBarStyleLarge"
@@ -31,6 +44,7 @@
             android:visibility="visible"
             android:layout_marginBottom="16dp" />
 
+        <!-- CardView for RecyclerView -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
