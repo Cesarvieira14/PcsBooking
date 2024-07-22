@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/navigation_admin_home">
+
+    <fragment
+        android:id="@+id/navigation_admin_home"
+        android:name="com.example.pcsbooking.ui.AdminHome.AdminHomeFragment"
+        android:label="Admin Home"
+        tools:layout="@layout/fragment_admin_home" />
+    <fragment
+        android:id="@+id/navigation_admin_bookings"
+        android:name="com.example.pcsbooking.ui.AdminBookings.AdminBookingsFragment"
+        android:label="Admin Bookings"
+        tools:layout="@layout/fragment_admin_bookings" />
+    <fragment
+        android:id="@+id/navigation_admin_users"
+        android:name="com.example.pcsbooking.ui.AdminUsers.AdminUsersFragment"
+        android:label="Admin Users"
+        tools:layout="@layout/fragment_admin_users" />
+    <fragment
+        android:id="@+id/navigation_admin_machines"
+        android:name="com.example.pcsbooking.ui.AdminMachines.AdminMachinesFragment"
+        android:label="Admin Machines"
+        tools:layout="@layout/fragment_admin_machines" />
+    <fragment
+        android:id="@+id/navigation_admin_profile"
+        android:name="com.example.pcsbooking.ui.AdminProfile.AdminProfileFragment"
+        android:label="Admin Profile"
+        tools:layout="@layout/fragment_admin_profile" />
+</navigation>

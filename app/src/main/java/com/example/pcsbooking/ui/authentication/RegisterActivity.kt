@@ -5,29 +5,27 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.pcsbooking.Model.User
 import com.example.pcsbooking.R
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // Initialize Firebase Auth
         auth = Firebase.auth
-
 
         findViewById<Button>(R.id.ConfirmBtn).setOnClickListener {
             handleConfirmButtonClick()
+        }
     }
-}
 
     private fun handleConfirmButtonClick() {
         val email = findViewById<EditText>(R.id.editTxtEmail).text.toString()
@@ -59,7 +57,6 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Registration successful, update user's profile information
                     val user = auth.currentUser
                     val profileUpdates = UserProfileChangeRequest.Builder()
                         .setDisplayName(fullName)
@@ -68,30 +65,23 @@ class RegisterActivity : AppCompatActivity() {
                     user?.updateProfile(profileUpdates)
                         ?.addOnCompleteListener { profileUpdateTask ->
                             if (profileUpdateTask.isSuccessful) {
-                                // Save user data to Realtime Database
                                 val database = FirebaseDatabase.getInstance().reference
-                                val userData = mapOf(
-                                    "fullName" to fullName,
-                                    "email" to email,
-                                    "phoneNo" to phoneNo
-                                )
+                                val userData = User(email, fullName, phoneNo, false) // Normal user
                                 user.uid?.let { userId ->
                                     database.child("users").child(userId).setValue(userData)
                                         .addOnSuccessListener {
                                             showToast("Registration successful")
-                                            finish() // Optionally finish the activity
+                                            finish()
                                         }
                                         .addOnFailureListener { exception ->
                                             showToast("Failed to save user data: ${exception.message}")
                                         }
                                 }
                             } else {
-                                // Handle profile update failure
                                 showToast("Failed to update profile")
                             }
                         }
                 } else {
-                    // If registration fails, display a message to the user.
                     showToast("Registration failed: ${task.exception?.message}")
                 }
             }
@@ -100,6 +90,4 @@ class RegisterActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
 }
-

@@ -1,10 +1,8 @@
 package com.example.pcsbooking.Model
 
 data class User(
-    val email: String,
-    val fullName: String,
-    val phoneNo: String
-) {
-    // Construtor padrão vazio necessário para Firebase
-    constructor() : this("", "", "")
-}
+    val email: String = "",
+    val fullName: String = "",
+    val phoneNo: String = "",
+    val admin: Boolean = false // Change isAdmin to admin to match Firebase
+)
