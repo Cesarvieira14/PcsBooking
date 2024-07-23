@@ -13,34 +13,28 @@ class UsersAdapter(
     private val onUserClick: (Pair<String, User>) -> Unit
 ) : RecyclerView.Adapter<UsersAdapter.UserViewHolder>() {
 
-    private var filteredUsers: List<Pair<String, User>> = users
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
         return UserViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val userPair = filteredUsers[position]
+        val userPair = users[position]
         holder.bind(userPair, onUserClick)
     }
 
-    override fun getItemCount(): Int = filteredUsers.size
+    override fun getItemCount(): Int = users.size
 
     fun updateUsers(newUsers: List<Pair<String, User>>) {
         users = newUsers
-        filter("")
+        notifyDataSetChanged()
     }
 
     fun filter(query: String) {
-        filteredUsers = if (query.isEmpty()) {
-            users
-        } else {
-            users.filter { (_, user) ->
-                user.fullName.contains(query, ignoreCase = true)
-            }
+        val filteredUsers = users.filter {
+            it.second.fullName.contains(query, ignoreCase = true)
         }
-        notifyDataSetChanged()
+        updateUsers(filteredUsers)
     }
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
