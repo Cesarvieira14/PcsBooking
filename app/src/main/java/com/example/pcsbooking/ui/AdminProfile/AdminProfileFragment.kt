@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.pcsbooking.R
-import com.example.pcsbooking.ui.authentication.LoginActivity
 import com.example.pcsbooking.databinding.FragmentAdminProfileBinding
+import com.example.pcsbooking.ui.authentication.LoginActivity
 
 class AdminProfileFragment : Fragment() {
 
@@ -27,6 +28,24 @@ class AdminProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getAdminProfile()
+
+        viewModel.fullName.observe(viewLifecycleOwner, Observer { fullName ->
+            binding.fullNameTextView.text = fullName
+        })
+
+        viewModel.email.observe(viewLifecycleOwner, Observer { email ->
+            binding.emailTextView.text = email
+        })
+
+        viewModel.phoneNo.observe(viewLifecycleOwner, Observer { phoneNo ->
+            binding.phoneTextView.text = phoneNo
+        })
+
+        binding.resetPasswordButton.setOnClickListener {
+            viewModel.resetPassword()
+        }
 
         binding.logoutButton.setOnClickListener {
             viewModel.logout()
@@ -46,3 +65,4 @@ class AdminProfileFragment : Fragment() {
         _binding = null
     }
 }
+

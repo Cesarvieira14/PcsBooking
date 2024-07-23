@@ -27,7 +27,53 @@
             android:fontFamily="sans-serif-medium" />
 
         <TextView
-            android:id="@+id/textProfile"
+            android:id="@+id/fullNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full Name"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/fullNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:padding="16dp"
+            android:background="@drawable/profile_background"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/emailLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/emailTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:padding="16dp"
+            android:background="@drawable/profile_background"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/phoneLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Number"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/phoneTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -42,21 +88,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset Password"
-            app:layout_constraintTop_toBottomOf="@id/textProfile"
+            app:layout_constraintTop_toBottomOf="@id/phoneTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp"
             android:onClick="resetPassword" />
 
         <Button
-            android:id="@+id/LogoutButton"
+            android:id="@+id/logoutButton"
             android:layout_width="100dp"
             android:layout_height="48dp"
             android:text="Logout"
             android:backgroundTint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp" />
 
     </LinearLayout>
 </ScrollView>

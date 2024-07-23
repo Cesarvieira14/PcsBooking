@@ -10,22 +10,20 @@ import com.google.firebase.ktx.Firebase
 
 class ProfileViewModel : ViewModel() {
 
-    private var auth: FirebaseAuth = Firebase.auth
-    private var database = Firebase.database.reference
+    private val auth: FirebaseAuth = Firebase.auth
+    private val database = Firebase.database.reference
+
     private val _fullName = MutableLiveData<String>()
     private val _phoneNo = MutableLiveData<String>()
     private val _email = MutableLiveData<String>()
-
-
     val fullName: LiveData<String> = _fullName
     val phoneNo: LiveData<String> = _phoneNo
     val email: LiveData<String> = _email
 
-    init {
-        loadUserDetails()
-    }
+    private val _resetPasswordResult = MutableLiveData<Boolean>()
+    val resetPasswordResult: LiveData<Boolean> = _resetPasswordResult
 
-    private fun loadUserDetails() {
+    fun loadUserDetails() {
         val user = auth.currentUser
         _email.value = user?.email // Fetch email directly from FirebaseAuth
 
@@ -40,8 +38,6 @@ class ProfileViewModel : ViewModel() {
             }
         }
     }
-    private val _resetPasswordResult = MutableLiveData<Boolean>()
-    val resetPasswordResult: LiveData<Boolean> = _resetPasswordResult
 
     fun resetPassword(email: String, callback: (Boolean) -> Unit) {
         auth.sendPasswordResetEmail(email)

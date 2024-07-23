@@ -7,51 +7,45 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.pcsbooking.databinding.FragmentProfileBinding
 import com.example.pcsbooking.ui.authentication.LoginActivity
-import com.example.pcsbooking.ui.profile.ProfileViewModel
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var profileViewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        // Observe all user details
-        profileViewModel.email.observe(viewLifecycleOwner) { email ->
-            profileViewModel.fullName.observe(viewLifecycleOwner) { fullName ->
-                profileViewModel.phoneNo.observe(viewLifecycleOwner) { phoneNo ->
-                    val userDetailsText = buildString {
-                        append("$email\n")
-                        append("Name: $fullName\n")
-                        append("Phone: $phoneNo")
-                    }
-                    binding.textProfile.text = userDetailsText
-                }
-            }
-        }
-        // Set click listener for logout button
-        binding.LogoutButton.setOnClickListener {
-            profileViewModel.logout()
-            navigateToLogin()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.loadUserDetails()
+
+        viewModel.fullName.observe(viewLifecycleOwner) { fullName ->
+            binding.fullNameTextView.text = fullName
         }
 
-        // Set click listener for reset password button
+        viewModel.email.observe(viewLifecycleOwner) { email ->
+            binding.emailTextView.text = email
+        }
+
+        viewModel.phoneNo.observe(viewLifecycleOwner) { phoneNo ->
+            binding.phoneTextView.text = phoneNo
+        }
+
         binding.resetPasswordButton.setOnClickListener {
-            val email = profileViewModel.email.value
+            val email = viewModel.email.value
             if (!email.isNullOrBlank()) {
-                profileViewModel.resetPassword(email) { success ->
+                viewModel.resetPassword(email) { success ->
                     val message = if (success) {
                         "Password reset email sent successfully"
                     } else {
@@ -61,7 +55,11 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
-        return root
+
+        binding.logoutButton.setOnClickListener {
+            viewModel.logout()
+            navigateToLogin()
+        }
     }
 
     private fun navigateToLogin() {
@@ -76,3 +74,5 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 }
+
+
