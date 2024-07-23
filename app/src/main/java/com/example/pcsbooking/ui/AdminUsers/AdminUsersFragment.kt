@@ -1,32 +1,54 @@
 package com.example.pcsbooking.ui.AdminUsers
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.pcsbooking.R
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pcsbooking.databinding.FragmentAdminUsersBinding
+import com.example.pcsbooking.Model.User
 
 class AdminUsersFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = AdminUsersFragment()
-    }
-
-    private lateinit var viewModel: AdminUsersViewModel
+    private var _binding: FragmentAdminUsersBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: AdminUsersViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_admin_users, container, false)
+    ): View {
+        _binding = FragmentAdminUsersBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AdminUsersViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val adapter = UsersAdapter(emptyList()) { userPair ->
+            displayUserDetails(userPair)
+        }
+        binding.usersRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.usersRecyclerView.adapter = adapter
+
+        viewModel.users.observe(viewLifecycleOwner) { users ->
+            adapter.updateUsers(users)
+        }
     }
 
+    private fun displayUserDetails(userPair: Pair<String, User>) {
+        val (userId, user) = userPair
+        val userDetails =
+            "User ID: $userId\nName: ${user.fullName}\nEmail: ${user.email}\nPhone: ${user.phoneNo}"
+        Toast.makeText(requireContext(), userDetails, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
+
