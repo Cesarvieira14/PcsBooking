@@ -1,10 +1,12 @@
 package com.example.pcsbooking.ui.AdminUsers
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,21 +31,27 @@ class AdminUsersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = UsersAdapter(emptyList()) { userPair ->
-            displayUserDetails(userPair)
+            val (userId, user) = userPair
+            val intent = Intent(requireContext(), UserDetailsActivity::class.java).apply {
+                putExtra("USER_ID", userId)
+                putExtra("USER_NAME", user.fullName)
+                putExtra("USER_EMAIL", user.email)
+                putExtra("USER_PHONE", user.phoneNo)
+                putExtra("USER_IS_ADMIN", user.admin)
+            }
+            startActivity(intent)
         }
+
         binding.usersRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.usersRecyclerView.adapter = adapter
 
         viewModel.users.observe(viewLifecycleOwner) { users ->
             adapter.updateUsers(users)
         }
-    }
 
-    private fun displayUserDetails(userPair: Pair<String, User>) {
-        val (userId, user) = userPair
-        val userDetails =
-            "User ID: $userId\nName: ${user.fullName}\nEmail: ${user.email}\nPhone: ${user.phoneNo}"
-        Toast.makeText(requireContext(), userDetails, Toast.LENGTH_LONG).show()
+        binding.searchBar.addTextChangedListener { text ->
+            adapter.filter(text.toString())
+        }
     }
 
     override fun onDestroyView() {
@@ -51,4 +59,3 @@ class AdminUsersFragment : Fragment() {
         _binding = null
     }
 }
-

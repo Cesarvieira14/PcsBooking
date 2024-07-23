@@ -96,9 +96,10 @@
 
         <Button
             android:id="@+id/logoutButton"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="48dp"
             android:text="Logout"
+            android:textColor="@color/white"
             android:backgroundTint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
