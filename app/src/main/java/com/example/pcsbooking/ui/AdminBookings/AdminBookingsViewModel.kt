@@ -36,7 +36,6 @@ class AdminBookingsViewModel : ViewModel() {
                     val bookingId = bookingSnapshot.key ?: continue
                     val booking = bookingSnapshot.getValue(Booking::class.java) ?: continue
 
-                    // Filter bookings based on the date
                     if (booking.date >= currentDate) {
                         bookingsList.add(Pair(bookingId, booking))
                     }

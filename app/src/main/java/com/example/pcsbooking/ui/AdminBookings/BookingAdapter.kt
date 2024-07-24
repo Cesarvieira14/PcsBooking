@@ -15,6 +15,8 @@ class BookingAdapter(
     private val onClick: (Pair<String, Booking>) -> Unit
 ) : RecyclerView.Adapter<BookingAdapter.ViewHolder>() {
 
+    private val userNames = mutableMapOf<String, String>()
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvPcId: TextView = view.findViewById(R.id.tvPcId)
         val tvUserName: TextView = view.findViewById(R.id.tvUserName)
@@ -32,12 +34,8 @@ class BookingAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val (bookingId, booking) = bookings[position]
 
-        // Get the ViewModel instance from the context
-        val viewModel =
-            (holder.itemView.context as FragmentActivity).viewModels<AdminBookingsViewModel>().value
-
-        // Fetch the user name from the ViewModel
-        val userName = viewModel.getUserName(booking.userId) ?: "Unknown User"
+        // Get user name from the map or default to "Unknown User"
+        val userName = userNames[booking.userId] ?: "Unknown User"
 
         holder.tvPcId.text = "PC ID: ${booking.pcId}"
         holder.tvUserName.text = "User: $userName"
@@ -53,6 +51,11 @@ class BookingAdapter(
     fun updateBookings(newBookings: List<Pair<String, Booking>>) {
         bookings = newBookings
         notifyDataSetChanged()
+    }
+
+    fun updateUserName(userId: String, userName: String) {
+        userNames[userId] = userName
+        notifyDataSetChanged() // Refresh items when user name is updated
     }
 
     private fun convertMinutesToHours(minutes: Int): String {

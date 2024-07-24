@@ -35,7 +35,6 @@ class AdminBookingsFragment : Fragment() {
 
         val adapter = BookingAdapter(emptyList()) { bookingPair ->
             val (bookingId, booking) = bookingPair
-
             val intent = Intent(requireContext(), BookingDetailsActivity::class.java).apply {
                 putExtra("BOOKING_ID", bookingId)
                 putExtra("PC_ID", booking.pcId)
@@ -52,6 +51,12 @@ class AdminBookingsFragment : Fragment() {
 
         viewModel.bookings.observe(viewLifecycleOwner) { bookings ->
             updateBookings(adapter, bookings)
+        }
+
+        viewModel.users.observe(viewLifecycleOwner) { users ->
+            users.forEach { (userId, user) ->
+                adapter.updateUserName(userId, user.fullName)
+            }
         }
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
