@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -17,15 +18,33 @@
         android:textStyle="bold"
         android:fontFamily="sans-serif-medium" />
 
-    <EditText
-        android:id="@+id/searchBar"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search by date"
-        android:inputType="text"
-        android:padding="10dp"
-        android:background="@drawable/search_bar_background"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="?attr/colorPrimary"
+        app:tabSelectedTextColor="?attr/colorPrimary"
+        app:tabTextColor="?android:textColorSecondary">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Today" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next 7 Days" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This Week" />
+
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookingsRecyclerView"
@@ -34,4 +53,5 @@
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
         android:layout_marginBottom="20dp" />
+
 </LinearLayout>
