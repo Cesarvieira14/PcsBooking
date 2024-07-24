@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pcsbooking.R
 import com.google.firebase.database.DatabaseReference
@@ -45,7 +46,7 @@ class BookingDetailsActivity : AppCompatActivity() {
 
         // Setup cancel button functionality
         findViewById<Button>(R.id.btnCancelBooking).setOnClickListener {
-            cancelBooking()
+            showConfirmationDialog()
         }
     }
 
@@ -77,6 +78,19 @@ class BookingDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun showConfirmationDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle("Confirm Cancellation")
+        dialogBuilder.setMessage("Are you sure you want to cancel this booking?")
+        dialogBuilder.setPositiveButton("Yes") { dialog, _ ->
+            cancelBooking()
+            dialog.dismiss()
+        }
+        dialogBuilder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+        dialogBuilder.create().show()
+    }
 
     private fun cancelBooking() {
         if (bookingId.isNotEmpty()) {
