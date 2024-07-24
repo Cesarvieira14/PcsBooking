@@ -30,10 +30,16 @@ class AdminBookingsViewModel : ViewModel() {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val bookingsList = mutableListOf<Pair<String, Booking>>()
+                val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
                 for (bookingSnapshot in snapshot.children) {
                     val bookingId = bookingSnapshot.key ?: continue
                     val booking = bookingSnapshot.getValue(Booking::class.java) ?: continue
-                    bookingsList.add(Pair(bookingId, booking))
+
+                    // Filter bookings based on the date
+                    if (booking.date >= currentDate) {
+                        bookingsList.add(Pair(bookingId, booking))
+                    }
                 }
                 _bookings.value = bookingsList
             }

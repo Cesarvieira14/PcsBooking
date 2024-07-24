@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pcsbooking.Model.Booking
 import com.example.pcsbooking.R
@@ -30,8 +32,12 @@ class BookingAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val (bookingId, booking) = bookings[position]
 
-        // Fetch the user name from the ViewModel if available
-        val userName = "Unknown User" // Replace with actual user name fetching logic
+        // Get the ViewModel instance from the context
+        val viewModel =
+            (holder.itemView.context as FragmentActivity).viewModels<AdminBookingsViewModel>().value
+
+        // Fetch the user name from the ViewModel
+        val userName = viewModel.getUserName(booking.userId) ?: "Unknown User"
 
         holder.tvPcId.text = "PC ID: ${booking.pcId}"
         holder.tvUserName.text = "User: $userName"

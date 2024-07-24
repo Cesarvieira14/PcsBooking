@@ -49,7 +49,8 @@ class AdminBookingsFragment : Fragment() {
         }
 
         viewModel.users.observe(viewLifecycleOwner) { users ->
-            // Ensure users LiveData is observed to make sure getUserName has the required data
+            // Ensure the adapter gets updated with new user data
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -58,4 +59,3 @@ class AdminBookingsFragment : Fragment() {
         _binding = null
     }
 }
-
