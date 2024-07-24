@@ -15,6 +15,9 @@
         android:theme="@style/Theme.PcsBooking"
         tools:targetApi="31">
         <activity
+            android:name=".ui.AdminBookings.BookingDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.AdminUsers.UserDetailsActivity"
             android:exported="false" />
         <activity

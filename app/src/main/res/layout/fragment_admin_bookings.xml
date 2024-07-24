@@ -6,8 +6,32 @@
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/textTitle"
+        style="@style/TextAppearance.Material3.HeadlineLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Admin Bookings"
-        android:textAppearance="?attr/textAppearanceHeadline5" />
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="Booking Management"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium" />
+
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search by date"
+        android:inputType="text"
+        android:padding="10dp"
+        android:background="@drawable/search_bar_background"
+        android:layout_marginBottom="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bookingsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:layout_marginBottom="20dp" />
 </LinearLayout>
