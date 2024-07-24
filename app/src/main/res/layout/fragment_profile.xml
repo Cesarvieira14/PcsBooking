@@ -88,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset Password"
+            android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@id/phoneTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

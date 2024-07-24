@@ -88,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset Password"
+            android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@id/phoneTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,9 +97,10 @@
 
         <Button
             android:id="@+id/logoutButton"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="48dp"
             android:text="Logout"
+            android:textColor="@color/white"
             android:backgroundTint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
