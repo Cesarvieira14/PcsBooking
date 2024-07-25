@@ -20,4 +20,5 @@
     <string name="title_timeslot">Book time</string>
     <string name="title_available_days">Avaiable days</string>
     <string name="title_my_bookings">My upcoming bookings:</string>
+    <string name="add_machine">Add Machine</string>
 </resources>
