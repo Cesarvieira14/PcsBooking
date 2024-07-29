@@ -36,6 +36,17 @@ class AdminMachinesViewModel : ViewModel() {
         })
     }
 
+    fun updateMachine(machine: Machine) {
+        val database = FirebaseDatabase.getInstance().getReference("pcs")
+        database.child(machine.name).setValue(machine).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Optionally notify the UI or log the success
+            } else {
+                // Handle the failure
+            }
+        }
+    }
+
 
 }
 

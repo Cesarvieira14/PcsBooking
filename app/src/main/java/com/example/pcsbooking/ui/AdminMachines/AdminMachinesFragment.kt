@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pcsbooking.Model.Machine
 import com.example.pcsbooking.databinding.FragmentAdminMachinesBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AdminMachinesFragment : Fragment() {
 
@@ -28,8 +28,15 @@ class AdminMachinesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the adapter with an empty list
-        val adapter = MachineAdapter(emptyList())
+        // Initialize the adapter with an empty list and set the click listener
+        val adapter = MachineAdapter(emptyList()) { machine ->
+            val intent = Intent(requireContext(), UpdateMachineActivity::class.java).apply {
+                putExtra("machineName", machine.name)
+                putExtra("machineDescription", machine.description)
+                putExtra("machineLocation", machine.location)
+            }
+            startActivity(intent)
+        }
 
         // Set up RecyclerView
         binding.machinesRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -52,4 +59,6 @@ class AdminMachinesFragment : Fragment() {
         _binding = null
     }
 }
+
+
 
