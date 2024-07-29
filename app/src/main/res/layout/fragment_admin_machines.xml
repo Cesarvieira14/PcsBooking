@@ -1,22 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/textTitle"
+        style="@style/TextAppearance.Material3.HeadlineLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:text="Machine Management"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/btnAddMachine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/black"
+        android:textColor="@android:color/white"
+        android:text="Add Machine"
+        android:padding="12dp"
+        android:textSize="14sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/machinesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_below="@id/btnAddMachine"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:layout_marginBottom="50dp" />
 
-        <Button
-            android:id="@+id/btnAddMachine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Machine" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/machinesRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-</layout>
+</RelativeLayout>
 
