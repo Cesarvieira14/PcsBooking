@@ -31,6 +31,7 @@ class AdminMachinesFragment : Fragment() {
         // Initialize the adapter with an empty list and set the click listener
         val adapter = MachineAdapter(emptyList()) { machine ->
             val intent = Intent(requireContext(), UpdateMachineActivity::class.java).apply {
+                putExtra("machineId", machine.id)
                 putExtra("machineName", machine.name)
                 putExtra("machineDescription", machine.description)
                 putExtra("machineLocation", machine.location)
@@ -59,6 +60,3 @@ class AdminMachinesFragment : Fragment() {
         _binding = null
     }
 }
-
-
-

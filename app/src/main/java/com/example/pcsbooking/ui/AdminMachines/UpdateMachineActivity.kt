@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pcsbooking.R
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class UpdateMachineActivity : AppCompatActivity() {
@@ -14,6 +15,8 @@ class UpdateMachineActivity : AppCompatActivity() {
     private lateinit var editDescription: EditText
     private lateinit var editLocation: EditText
     private lateinit var btnUpdate: Button
+    private lateinit var btnDelete: Button
+    private lateinit var machineId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,19 +26,23 @@ class UpdateMachineActivity : AppCompatActivity() {
         editDescription = findViewById(R.id.editDescription)
         editLocation = findViewById(R.id.editLocation)
         btnUpdate = findViewById(R.id.btnUpdate)
+        btnDelete = findViewById(R.id.btnDelete)
 
-        // Get the data passed from the previous activity
+        machineId = intent.getStringExtra("machineId") ?: return
         val name = intent.getStringExtra("machineName")
         val description = intent.getStringExtra("machineDescription")
         val location = intent.getStringExtra("machineLocation")
 
-        // Set the data to the views
         editName.setText(name)
         editDescription.setText(description)
         editLocation.setText(location)
 
         btnUpdate.setOnClickListener {
             updateMachine()
+        }
+
+        btnDelete.setOnClickListener {
+            deleteMachine()
         }
     }
 
@@ -44,7 +51,6 @@ class UpdateMachineActivity : AppCompatActivity() {
         val newDescription = editDescription.text.toString()
         val newLocation = editLocation.text.toString()
 
-        // Assume 'pcs' node in Firebase stores machines, and machine names are unique identifiers
         val database = FirebaseDatabase.getInstance().getReference("pcs")
         val machineUpdate = mapOf(
             "name" to newName,
@@ -52,13 +58,11 @@ class UpdateMachineActivity : AppCompatActivity() {
             "location" to newLocation
         )
 
-        database.child(newName).updateChildren(machineUpdate).addOnCompleteListener { task ->
+        database.child(machineId).updateChildren(machineUpdate).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Update successful
                 Toast.makeText(this, "Machine updated successfully", Toast.LENGTH_SHORT).show()
                 finish() // Close the activity
             } else {
-                // Update failed
                 Toast.makeText(
                     this,
                     "Failed to update machine: ${task.exception?.message}",
@@ -67,5 +71,21 @@ class UpdateMachineActivity : AppCompatActivity() {
             }
         }
     }
-}
 
+    private fun deleteMachine() {
+        val database = FirebaseDatabase.getInstance().getReference("pcs")
+
+        database.child(machineId).removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(this, "Machine deleted successfully", Toast.LENGTH_SHORT).show()
+                finish() // Close the activity
+            } else {
+                Toast.makeText(
+                    this,
+                    "Failed to delete machine: ${task.exception?.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+}

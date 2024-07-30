@@ -25,7 +25,10 @@ class AdminMachinesViewModel : ViewModel() {
                 val machinesList = mutableListOf<Machine>()
                 for (machineSnapshot in snapshot.children) {
                     val machine = machineSnapshot.getValue(Machine::class.java)
-                    machine?.let { machinesList.add(it) }
+                    if (machine != null) {
+                        // Include ID in the machine object
+                        machinesList.add(machine.copy(id = machineSnapshot.key!!))
+                    }
                 }
                 _machines.value = machinesList
             }
@@ -38,7 +41,7 @@ class AdminMachinesViewModel : ViewModel() {
 
     fun updateMachine(machine: Machine) {
         val database = FirebaseDatabase.getInstance().getReference("pcs")
-        database.child(machine.name).setValue(machine).addOnCompleteListener { task ->
+        database.child(machine.id).setValue(machine).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Optionally notify the UI or log the success
             } else {
@@ -46,7 +49,4 @@ class AdminMachinesViewModel : ViewModel() {
             }
         }
     }
-
-
 }
-

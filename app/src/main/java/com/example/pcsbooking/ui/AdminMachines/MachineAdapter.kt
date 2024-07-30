@@ -10,7 +10,7 @@ import com.example.pcsbooking.R
 
 class MachineAdapter(
     private var machines: List<Machine>,
-    private val onItemClick: (Machine) -> Unit // Lambda function to handle item clicks
+    private val onClick: (Machine) -> Unit
 ) : RecyclerView.Adapter<MachineAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,9 +31,8 @@ class MachineAdapter(
         holder.tvDescription.text = machine.description
         holder.tvLocation.text = machine.location
 
-        // Set up the item click listener
         holder.itemView.setOnClickListener {
-            onItemClick(machine)
+            onClick(machine)
         }
     }
 
@@ -44,4 +43,3 @@ class MachineAdapter(
         notifyDataSetChanged()
     }
 }
-
