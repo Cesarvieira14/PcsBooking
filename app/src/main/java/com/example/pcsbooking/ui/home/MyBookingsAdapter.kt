@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pcsbooking.Model.Booking
-import com.example.pcsbooking.Model.Pc
 import com.example.pcsbooking.R
 
-// MyBookingsAdapter.kt
 class MyBookingsAdapter(
     private val context: Context,
     private var bookingsList: List<Booking>,
@@ -18,7 +16,7 @@ class MyBookingsAdapter(
 ) : RecyclerView.Adapter<MyBookingsAdapter.MyBookingsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyBookingsViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_pc, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_booking_home, parent, false)
         return MyBookingsViewHolder(view)
     }
 
@@ -40,12 +38,11 @@ class MyBookingsAdapter(
     }
 
     inner class MyBookingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val titleText: TextView = itemView.findViewById(R.id.tv_pc_name)
+        private val detailsText: TextView = itemView.findViewById(R.id.tv_booking_home_details)
 
         fun bind(booking: Booking) {
-            var time = "${booking.startTime / 60}:00 - ${booking.endTime / 60}:00"
-            titleText.text = booking.pcId + " - " + booking.date + " at $time"
+            val time = "${booking.startTime / 60}:00 - ${booking.endTime / 60}:00"
+            detailsText.text = "${booking.pcId} - ${booking.date} at $time"
         }
     }
 }
-

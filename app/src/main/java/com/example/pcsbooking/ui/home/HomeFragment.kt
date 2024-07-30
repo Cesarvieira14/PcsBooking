@@ -4,24 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pcsbooking.R
 import com.example.pcsbooking.databinding.FragmentHomeBinding
 import com.example.pcsbooking.ui.Book.BookViewModel
-import com.example.pcsbooking.ui.Book.PcAdapter
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var homeViewModel: HomeViewModel
     private lateinit var bookViewModel: BookViewModel
     private lateinit var myBookingsAdapter: MyBookingsAdapter
 
@@ -37,9 +33,23 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
 
-        handleMyBookingsAdapter(view)
+        homeViewModel.welcomeMessage.observe(viewLifecycleOwner, Observer { message ->
+            binding.tvWelcomeMessage.text = message
+        })
+
+        homeViewModel.nextBooking.observe(viewLifecycleOwner, Observer { booking ->
+            if (booking != null) {
+                binding.tvNextBooking.text =
+                    "Your next booking is on ${booking.date} from ${booking.startTime / 60}:00 to ${booking.endTime / 60}:00."
+            } else {
+                binding.tvNextBooking.text = "You have no upcoming bookings."
+            }
+        })
+
+        handleMyBookingsAdapter()
     }
 
     override fun onDestroyView() {
@@ -47,9 +57,9 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    fun handleMyBookingsAdapter(view: View) {
-        myBookingsAdapter = MyBookingsAdapter(requireContext(), listOf()) { selectedPc ->
-            Toast.makeText(requireContext(), "Clicked on my booking", Toast.LENGTH_SHORT).show()
+    private fun handleMyBookingsAdapter() {
+        myBookingsAdapter = MyBookingsAdapter(requireContext(), listOf()) { selectedBooking ->
+            Toast.makeText(requireContext(), "Clicked on booking", Toast.LENGTH_SHORT).show()
         }
 
         binding.rvCurrentBookings.layoutManager = LinearLayoutManager(requireContext())

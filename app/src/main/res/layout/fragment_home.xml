@@ -3,33 +3,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.home.HomeFragment">
 
+    <!-- Welcome Message TextView -->
     <TextView
+        android:id="@+id/tvWelcomeMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp" />
+        android:text="Welcome back, [User Name]!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="16dp" />
 
+    <!-- Next Booking Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/next_booking_background"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tvNextBookingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next Booking"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvNextBooking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your next booking information will be shown here."
+            android:textSize="16sp"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <!-- Section Title for Bookings -->
     <TextView
+        android:id="@+id/tvMyBookingsTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title_my_bookings"
-        android:layout_marginBottom="20dp" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="8dp" />
 
+    <!-- ProgressBar for loading state -->
     <ProgressBar
-        style="?android:attr/progressBarStyleLarge"
+        android:id="@+id/myBookingsProgressBar"
+        style="?android:attr/progressBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/myBookingsProgressBar"
-        android:visibility="visible" />
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
 
+    <!-- RecyclerView for displaying current bookings -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCurrentBookings"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="8dp"
+        android:background="@android:color/white"
+        android:overScrollMode="always"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_booking_home" />
 
 </LinearLayout>
+
+
