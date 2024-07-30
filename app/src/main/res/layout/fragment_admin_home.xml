@@ -3,11 +3,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="center_horizontal"
+    android:background="@color/background_color">
 
+    <!-- Welcome Message -->
     <TextView
+        android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Admin Home"
-        android:textAppearance="?attr/textAppearanceHeadline5" />
+        android:text="Welcome, Admin"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Total Machines -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:background="@drawable/card_background">
+
+        <TextView
+            android:id="@+id/tvTotalMachines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Machines: 0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <!-- Active Bookings -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:background="@drawable/card_background">
+
+        <TextView
+            android:id="@+id/tvActiveBookings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active Bookings: 0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <!-- Total Users -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:background="@drawable/card_background">
+
+        <TextView
+            android:id="@+id/tvTotalUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Users: 0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
 </LinearLayout>
+
