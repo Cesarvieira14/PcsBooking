@@ -59,13 +59,17 @@ class HomeFragment : Fragment() {
 
     private fun handleMyBookingsAdapter() {
         myBookingsAdapter = MyBookingsAdapter(requireContext(), listOf()) { selectedBooking ->
-            Toast.makeText(requireContext(), "Clicked on booking", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "To Manage go to the manage section",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         binding.rvCurrentBookings.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCurrentBookings.adapter = myBookingsAdapter
 
-        bookViewModel.myBookings.observe(viewLifecycleOwner, Observer { bookings ->
+        homeViewModel.upcomingBookings.observe(viewLifecycleOwner, Observer { bookings ->
             bookings?.let { myBookingsAdapter.submitList(it) }
 
             if (bookings.isNotEmpty()) {
@@ -74,3 +78,4 @@ class HomeFragment : Fragment() {
         })
     }
 }
+

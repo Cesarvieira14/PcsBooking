@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.example.pcsbooking.Model.Booking
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeViewModel : ViewModel() {
 
@@ -15,13 +17,16 @@ class HomeViewModel : ViewModel() {
     private val _nextBooking = MutableLiveData<Booking?>()
     val nextBooking: LiveData<Booking?> = _nextBooking
 
+    private val _upcomingBookings = MutableLiveData<List<Booking>>()
+    val upcomingBookings: LiveData<List<Booking>> = _upcomingBookings
+
     private val database: DatabaseReference =
         FirebaseDatabase.getInstance().getReference("bookings")
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     init {
         loadUserData()
-        loadNextBooking()
+        loadBookings()
     }
 
     private fun loadUserData() {
@@ -42,22 +47,30 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun loadNextBooking() {
+    private fun loadBookings() {
         val userId = auth.currentUser?.uid ?: return
 
         database.orderByChild("userId").equalTo(userId)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    var nextBooking: Booking? = null
+                    val bookings = mutableListOf<Booking>()
+                    val currentDate = Date()
+
                     for (bookingSnapshot in dataSnapshot.children) {
                         val booking = bookingSnapshot.getValue(Booking::class.java)
                         if (booking != null) {
-                            if (nextBooking == null || booking.date < nextBooking.date) {
-                                nextBooking = booking
+                            val bookingDate = parseBookingDateTime(booking.date, booking.startTime)
+                            if (bookingDate != null && bookingDate.after(currentDate)) {
+                                bookings.add(booking)
                             }
                         }
                     }
-                    _nextBooking.value = nextBooking
+                    // Sort bookings by date and time
+                    bookings.sortWith(compareBy({ it.date }, { it.startTime }))
+                    // Set the next booking and upcoming bookings
+                    _nextBooking.value = bookings.firstOrNull()
+                    _upcomingBookings.value =
+                        if (bookings.size > 1) bookings.drop(1) else emptyList()
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -65,4 +78,15 @@ class HomeViewModel : ViewModel() {
                 }
             })
     }
+
+    private fun parseBookingDateTime(date: String, startTime: Int): Date? {
+        return try {
+            val dateTime = "$date ${startTime / 60}:00"
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+            dateFormat.parse(dateTime)
+        } catch (e: Exception) {
+            null
+        }
+    }
 }
+
