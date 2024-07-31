@@ -4,5 +4,5 @@ data class User(
     val email: String = "",
     val fullName: String = "",
     val phoneNo: String = "",
-    val admin: Boolean = false // Change isAdmin to admin to match Firebase
+    val admin: Boolean = false
 )
