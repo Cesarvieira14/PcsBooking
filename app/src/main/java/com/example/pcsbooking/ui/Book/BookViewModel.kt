@@ -161,7 +161,7 @@ class BookViewModel(application: Application) : AndroidViewModel(application) {
         val month = now.get(Calendar.MONTH) + 1 // Months are 0-based in Calendar
         val day = now.get(Calendar.DAY_OF_MONTH)
 
-        return "%04d-%02d-%02d".format(year, month, day) // Assuming the date format is "YYYY-MM-DD"
+        return "%04d-%02d-%02d".format(year, month, day) // date format is "YYYY-MM-DD"
     }
 
     fun setSelectedPc(pc: Pc) {
