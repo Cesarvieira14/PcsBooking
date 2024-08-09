@@ -4,7 +4,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <TextView
+        android:paddingTop="16dp"
+        android:layout_gravity="center"
+        android:id="@+id/tvManageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Past Bookings"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:fontFamily="sans-serif-medium"
+        android:paddingBottom="16dp" />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:padding="10dp"
         android:id="@+id/rvPastBookings"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

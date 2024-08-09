@@ -2,18 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/item_background_pc"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginBottom="12dp">
 
     <TextView
         android:id="@+id/tv_pc_name"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Pc_Name"
-        android:textSize="16sp"
+        android:text="PC Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:textColor="@color/black"
-        android:background="@drawable/buttonshape"
-        android:padding="10dp" />
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_pc_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PC Description"
+        android:textSize="14sp"
+        android:textColor="#C63E3E3E"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_pc_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location: Room 101, First Floor"
+        android:textSize="14sp"
+        android:textColor="@color/black" />
+
 </LinearLayout>

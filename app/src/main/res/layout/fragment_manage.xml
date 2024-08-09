@@ -6,19 +6,18 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Title with Larger Text Size and Bold Style -->
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/tvManageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your Bookings"
-        android:textSize="24sp"
+        android:textSize="24dp"
         android:textStyle="bold"
         android:textColor="?attr/colorPrimary"
         android:fontFamily="sans-serif-medium"
         android:paddingBottom="16dp" />
 
-    <!-- CardView to add elevation and padding to RecyclerView -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -35,7 +34,6 @@
             android:padding="8dp" />
     </androidx.cardview.widget.CardView>
 
-    <!-- MaterialButton with Rounded Corners and Primary Color -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPastBookings"
         android:layout_width="match_parent"

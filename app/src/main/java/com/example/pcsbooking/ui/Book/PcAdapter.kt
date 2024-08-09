@@ -39,10 +39,14 @@ class PcAdapter(
     }
 
     inner class PcViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val titleText: TextView = itemView.findViewById(R.id.tv_pc_name)
+        private val nameText: TextView = itemView.findViewById(R.id.tv_pc_name)
+        private val descriptionText: TextView = itemView.findViewById(R.id.tv_pc_description)
+        private val locationText: TextView = itemView.findViewById(R.id.tv_pc_location)
 
         fun bind(pc: Pc) {
-            titleText.text = pc.name // Use pc.name or whichever property of Pc you want to display
+            nameText.text = pc.name
+            descriptionText.text = pc.description
+            locationText.text = pc.location
         }
     }
 }
