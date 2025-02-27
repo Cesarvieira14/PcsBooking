@@ -35,6 +35,6 @@ This project was developed as part of my bachelor's final project at **De Montfo
 - **Tools**: Android Studio, Git
 
 ## Full Documentation
-
+(https://github.com/Cesarvieira14/PcsBooking/blob/master/Final%20Report-%20Cesar%20Vieira.pdf)
 
 
