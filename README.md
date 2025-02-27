@@ -34,9 +34,7 @@ This project was developed as part of my bachelor's final project at **De Montfo
 - **Backend**: Firebase (Authentication, Realtime Database)
 - **Tools**: Android Studio, Git
 
-## Installation
-To run this project locally, follow these steps:
+## Full Documentation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Cesarvieira14/PcsBooking.git
+
+
