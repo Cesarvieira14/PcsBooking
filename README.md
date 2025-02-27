@@ -1,7 +1,6 @@
 # Pc's Booking App
 
-![App Logo](images/logo.png) <!-- Add a logo if you have one -->
-
+![App Logo](![ic_application-playstore](https://github.com/user-attachments/assets/c569276f-0784-46cc-9043-513df88c58a8))
 ## Table of Contents
 - [Introduction](#introduction)
 - [Features](#features)
